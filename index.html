@@ -123,7 +123,7 @@
         <tr>
             <th></th>
             <th>Vormonat</th>
-            <th>Folgemonat</th>
+            <th>akt. Monat</th>
             <th>Gesamt</th>
         </tr>
         <tr>
@@ -176,7 +176,7 @@
         <tr>
             <th></th>
             <th>Vormonat</th>
-            <th>Folgemonat</th>
+            <th>akt. Monat</th>
             <th>Gesamt</th>
         </tr>
         <!-- Results will be inserted here by JavaScript -->
@@ -252,22 +252,22 @@
             // Update results table
             const resultsHtml = `
                 <tr>
-                    <td>Gesamtanwesenheit</td>
+                    <td>Sollstunden</td>
                     <td>${formatNumber(expectedTotalHours1)}h</td>
                     <td>${formatNumber(expectedTotalHours2)}h</td>
                     <td class="total-column">${formatNumber(expectedTotalHours12)}h</td>
                 </tr>
                 <tr>
-                    <td>Präsenz (${officePercent}%)</td>
+                    <td>Präsenzanteil)</td>
                     <td>${formatNumber(percentOfficeHours1)}%</td>
                     <td>${formatNumber(percentOfficeHours2)}%</td>
-                    <td class="total-column">${formatNumber(officePercent)}%</td>
+                    <td class="total-column">$(officePercent)%</td>
                 </tr>
                 <tr>
-                    <td>Homeoffice (${telePercent}%)</td>
+                    <td>Teleanteil)</td>
                     <td>${formatNumber(percentTeleHours1)}%</td>
                     <td>${formatNumber(percentTeleHours2)}%</td>
-                    <td class="total-column">${formatNumber(telePercent)}%</td>
+                    <td class="total-column">$(telePercent)%</td>
                 </tr>
                 <tr>
                     <td>Differenz zu regulär</td>
@@ -287,7 +287,7 @@
                 <tr>
                     <th></th>
                     <th>Vormonat</th>
-                    <th>Folgemonat</th>
+                    <th>akt. Monat</th>
                     <th>Gesamt</th>
                 </tr>
                 ${resultsHtml}
