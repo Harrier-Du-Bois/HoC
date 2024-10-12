@@ -392,6 +392,8 @@
         calculateHours();
 
         function resetCalculator() {
+            // Remove focus from all input fields
+            document.activeElement.blur();
             // Reset input fields
             document.getElementById('workDays1').value = '';
             document.getElementById('workDays2').value = '';
@@ -416,9 +418,11 @@
 
             // Recalculate
             calculateHours();
+            // Prevent default form submission behavior if the button is inside a form
+            return false;
         }
 
-        // Add event listener for the reset button
+        // Event listener for the reset button
         document.getElementById('resetButton').addEventListener('click', resetCalculator);
         document.getElementById('resetButton').addEventListener('touchend', function(e) {
             e.preventDefault(); // Prevent default touch behavior
