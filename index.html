@@ -158,7 +158,7 @@
                 align-items: center;
             }
         }
-            </style>
+    </style>
 </head>
 
 <body>
@@ -271,12 +271,10 @@
             const percentTeleHours1 = telHours1Inp / (officeHours1Inp + telHours1Inp) * 100 || 0;
             const percentTeleHours2 = telHours2Inp / (officeHours2Inp + telHours2Inp) * 100 || 0;
             
-            // Die optimale Stundenverteilung fuer Monat berechnen
+            // Optimale Stundenverteilung fuer Monat 2 berechnen
             const targetTeleHours = (totalHoursMonth1 + expectedTotalHours2) * (telePercent / 100);
-            // Math.max damit keine Werte unter Null angezeigt werden
-            const remainingTeleHours = Math.max(0, targetTeleHours - telHours1Inp);
-            // Math.min falls Monat 1 schon Gesamtsoll erfüllt
-            const optimalTelHours2 = Math.min(expectedTotalHours2, remainingTeleHours);
+            const remainingTeleHours = Math.max(0, targetTeleHours - telHours1Inp); // Math.max damit keine Werte unter Null angezeigt werden
+            const optimalTelHours2 = Math.min(expectedTotalHours2, remainingTeleHours);// Math.min falls Monat 1 schon Gesamtsoll erfüllt
             const optimalPrHours2 = Math.max(0, expectedTotalHours2 - optimalTelHours2);
             
             // Monat 2 span Elemente mit Optimalwerten updaten
@@ -300,7 +298,6 @@
             const teleDays1 = telHours1Inp / normalDailyHours || 0;
             const teleDays12 = expectedHomeHours / normalDailyHours || 0;
             const teleDays2 = teleDays12 - teleDays1 || 0;
-            
             const diffHours1 = telHours1Inp - expectedTotalHours1;
             const diffHours2 = telHours2 - expectedTotalHours2;
             const diffHours12 = (telHours1Inp + telHours2) - expectedTotalHours12;
