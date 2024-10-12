@@ -240,6 +240,18 @@
         © 2024 Christian G. All rights reserved.
     </div>
     <script>
+        function adjustFontSize() {
+            const cells = document.querySelectorAll('td', 'tr', '.result', '.optimal-result');
+            cells.forEach(cell => {
+                let fontSize = 16; // Default
+                cell.style.fontSize = fontSize + 'px';
+                while (cell.scrollWidth > cell.offsetWidth && fontSize > 8) {
+                    fontSize--;
+                    cell.style.fontSize = fontSize + 'px';
+                }
+            });
+        }
+        
         function calculateHours() {
             // Inputs abrufen
             const workDays1 = parseFloat(document.getElementById('workDays1').value) || 0;
@@ -313,7 +325,7 @@
                     <td class="result">${formatNumber(expectedTotalHours12)}h</td>
                 </tr>
                 <tr>
-                    <td class=" firstcol">Diff. zu ohne</td>
+                    <td class=" firstcol">Diff. zu RAZ</td>
                     <td>${formatNumber(diffHours1)}h</td>
                     <td>${formatNumber(diffHours2)}h</td>
                     <td class="result">${formatNumber(diffHours12)}h</td>
@@ -353,6 +365,10 @@
         function formatNumber(num) {
             return num.toFixed(2).replace('.', ',');
         }
+
+        // Eventlistener fuer Fontgroessenanpassung
+        window.addEventListener('load', adjustFontSize);
+        window.addEventListener('resize', adjustFontSize);
 
         // Eventlistener fuer Inputs
         document.querySelectorAll('input, select').forEach(input => {
