@@ -42,7 +42,7 @@
             overflow: hidden;
             margin: 0 auto; /* This will center the table if it's narrower than the screen */
             margin-bottom: 15px;
-            border: 2px solid #555;
+            /* border: 2px solid #555; */
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
@@ -124,7 +124,7 @@
             font-size: 16px;
             width: 100%;
             max-width: 600px;
-            background-color: #555;
+            background-color: #444;
             color: white;
             border: none;
             border-radius: 3px;
@@ -171,20 +171,20 @@
                 <th class="result">Gesamt</th>
             </tr>
             <tr>
-                <td class=" firstcol">Arbeitstage</td>
+                <td class=" firstcol" style="border-left: 2px solid #444;">Arbeitstage</td>
                 <td><input type="number" id="workDays1" placeholder="0" step="1" min="0"></td>
                 <td><input type="number" id="workDays2" placeholder="0" step="1" min="0"></td>
                 <td id="totalWorkDays" class="result"></td>
             </tr>
             <tr>
             <tr>
-                <td class=" firstcol">Officestunden</td>
+                <td class=" firstcol" style="border-left: 2px solid #444;">Officestunden</td>
                 <td><input type="number" id="prHours1" placeholder="0" step="0.01" min="0"></td>
                 <td><input type="number" id="prHours2Inp" placeholder="0" step="0.01" min="0"></td>
                 <td id="totalPrHours" class="result"></td>
             </tr>
             <tr>
-                <td class=" firstcol">Telestunden</td>
+                <td class=" firstcol" style="border-left: 2px solid #444;">Telestunden</td>
                 <td><input type="number" id="telHours1" placeholder="0" step="0.01" min="0"></td>
                 <td><input type="number" id="telHours2Inp" placeholder="0" step="0.01" min="0"></td>
                 <td id="totalTelHours" class="result"></td>
@@ -206,14 +206,14 @@
                 <th class="result">Optimum</th>
             </tr>
             <tr>
-                <td class=" firstcol">tägl. Arbeitszeit</td>
+                <td class=" firstcol" style="border-left: 2px solid #444;">tägl. Arbeitszeit</td>
                 <td><input type="number" id="dailyHours" value="8.01" step="0.01" min="0"></td>
                 <td class="optimal-result">Präsenz:</td>
                 <td id="prHours2" class="result"></td>
             </tr>
             <tr>
-                <td class=" firstcol">Teleanteil</td>
-                <td>
+                <td class=" firstcol" style="border-left: 2px solid #444; border-bottom: 2px solid #444;">Teleanteil</td>
+                <td style="border-bottom: 2px solid #444;">
                     <select type="percent" id="telePercent" >
                         <option value="60">60%</option>
                         <option value="80">80%</option>
@@ -316,25 +316,25 @@
             // Update results table
             const resultsHtml = `
                 <tr>
-                    <td class=" firstcol">Regelarbeitszeit</td>
+                    <td class=" firstcol" style="border-left: 2px solid #444;">Regelarbeitszeit</td>
                     <td>${formatNumber(expectedTotalHours1)}h</td>
                     <td>${formatNumber(expectedTotalHours2)}h</td>
                     <td class="result">${formatNumber(expectedTotalHours12)}h</td>
                 </tr>
                 <tr>
-                    <td class=" firstcol">Diff. zu ohne</td>
+                    <td class=" firstcol" style="border-left: 2px solid #444;">Diff. zu ohne</td>
                     <td>${formatNumber(diffHours1)}h</td>
                     <td>${formatNumber(diffHours2)}h</td>
                     <td class="result">${formatNumber(diffHours12)}h</td>
                 </tr>
                 <tr>
-                    <td class=" firstcol">Officeanteil</td>
+                    <td class=" firstcol" style="border-left: 2px solid #444;">Officeanteil</td>
                     <td>${formatNumber(percentOfficeHours1)}%</td>
                     <td>${formatNumber(percentOfficeHours2)}%</td>
                     <td class="result">${formatNumber(diffPercentOfficeHours)}%</td>
                 </tr>
                 <tr>
-                    <td class=" firstcol">Teleanteil</td>
+                    <td class=" firstcol" style="border-left: 2px solid #444;">Teleanteil</td>
                     <td>${formatNumber(percentTeleHours1)}%</td>
                     <td>${formatNumber(percentTeleHours2)}%</td>
                     <td class="result">${formatNumber(diffPercentTeleHours)}%</td>
