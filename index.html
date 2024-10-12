@@ -62,7 +62,7 @@
             max-width: fit-content;
         }
 
-        input[type="number"], select {
+        input[type="number"] {
             font-size: 16px;
             width: 60px;
             max-width: fit-content;
@@ -74,8 +74,19 @@
             text-align: center;
         }
 
-        .percentage-dropdown {
-            width: 60px; 
+        select[type="percent"] {
+            font-size: 16px;
+            width: 65px; /* Set your desired width */
+            max-width: fit-content;
+            background-color: #444;
+            color: #fff;
+            border: 1px solid #555;
+            border-radius: 3px;
+            padding: 2px 2px;
+            text-align: center;
+            padding-right: 20px;
+            text-indent: 0.01px;
+            text-overflow: '';
         }
 
         .optimal-result {
@@ -111,6 +122,18 @@
             border: none;
             border-radius: 3px;
             cursor: pointer;
+        }
+
+        .copyright {
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 5px;
+            box-sizing: border-box;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            color: #888;
         }
 
         @media screen and (max-width: 600px) {
@@ -185,7 +208,7 @@
             <tr>
                 <td class=" firstcol">Teleanteil in %</td>
                 <td>
-                    <select id="telePercent" class="percentage-dropdown">
+                    <select type="percent" id="telePercent" >
                         <option value="60">60%</option>
                         <option value="80">80%</option>
                     </select>
@@ -208,6 +231,9 @@
     </div>
     <div class="table-container">
         <button id="resetButton">Zurücksetzen</button>
+    </div>
+    <div class="copyright">
+        © 2024 Christian G. All rights reserved.
     </div>
     <script>
         function calculateHours() {
