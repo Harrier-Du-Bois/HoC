@@ -84,7 +84,6 @@
             border-radius: 3px;
             padding: 2px 2px;
             text-align: center;
-            padding-right: 5px;
             text-indent: 0.01px;
             text-overflow: '';
             /* Remove default arrow */
@@ -179,7 +178,7 @@
             </tr>
             <tr>
             <tr>
-                <td class=" firstcol">Präsenzstunden</td>
+                <td class=" firstcol">Officestunden</td>
                 <td><input type="number" id="prHours1" placeholder="0" step="0.01" min="0"></td>
                 <td><input type="number" id="prHours2Inp" placeholder="0" step="0.01" min="0"></td>
                 <td id="totalPrHours" class="result"></td>
@@ -213,7 +212,7 @@
                 <td id="prHours2" class="result"></td>
             </tr>
             <tr>
-                <td class=" firstcol">Teleanteil in %</td>
+                <td class=" firstcol">Teleanteil</td>
                 <td>
                     <select type="percent" id="telePercent" >
                         <option value="60">60%</option>
@@ -329,7 +328,7 @@
                     <td class="result">${formatNumber(diffHours12)}h</td>
                 </tr>
                 <tr>
-                    <td class=" firstcol">Präsenzanteil</td>
+                    <td class=" firstcol">Officeanteil</td>
                     <td>${formatNumber(percentOfficeHours1)}%</td>
                     <td>${formatNumber(percentOfficeHours2)}%</td>
                     <td class="result">${formatNumber(diffPercentOfficeHours)}%</td>
@@ -341,7 +340,7 @@
                     <td class="result">${formatNumber(diffPercentTeleHours)}%</td>
                 </tr>
                 <tr class="result">
-                    <td class=" firstcol">Anzahl Teletage</td>
+                    <td class=" firstcol">Teletage</td>
                     <td>${formatNumber(teleDays1)}</td>
                     <td>${formatNumber(teleDays2)}</td>
                     <td>${formatNumber(teleDays12)}</td>
