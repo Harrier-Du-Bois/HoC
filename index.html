@@ -15,7 +15,7 @@
             white-space: nowrap;
             background-color: #333333;
             color: #ffffff;
-            margin: 0; /* Remove default body margin */
+            margin: 0; /* Standardrand entfernen */
         }
         
         .table-container {
@@ -23,14 +23,14 @@
             padding-right: 10px;
             width: 100%;
             max-width: 600px;
-            margin: 0 auto; /* This will center the table if it's narrower than the screen */
+            margin: 0 auto; /* Alles zentrieren, wenn Container < Screen */
             box-sizing: border-box;
         }
         
         h1 {
             font-size: 20px;
-            margin: 5px 0 10px 0; /* Top and bottom margin 5px, left margin 0 */
-            padding-left: 0; /* Ensure no left padding */
+            margin: 5px 0 10px 0; /* Oben unten 5px, links rechts 0px Rand */
+            padding-left: 0; /* Padding links entfernen */
             align-self: flex-start;
             width: 100%;
             max-width: 600px;
@@ -40,7 +40,7 @@
         table {
             border-collapse: separate;
             overflow: hidden;
-            margin: 0 auto; /* This will center the table if it's narrower than the screen */
+            margin: 0 auto;
             margin-bottom: 20px;
             border: 2px solid #444;
             width: 100%;
@@ -87,11 +87,11 @@
             text-align: center;
             text-indent: 0.01px;
             text-overflow: '';
-            /* Remove default arrow */
+            /* DD-Pfeil entfernen */
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            /* For Internet Explorer */
+            /* Fuer Internet Explorer */
             &::-ms-expand {
                 display: none;
             }
@@ -103,7 +103,6 @@
             padding-right: 10px;
             text-align: right;
             font-weight: bold;
-            /* border-left: 2px solid #555; */
         }
 
         .result {
@@ -181,15 +180,15 @@
             <tr>
             <tr>
                 <td class=" firstcol">Officestunden</td>
-                <td><input type="number" id="prHours1" placeholder="0" step="0.01" min="0"></td>
-                <td><input type="number" id="prHours2Inp" placeholder="0" step="0.01" min="0"></td>
-                <td id="totalPrHours" class="result"></td>
+                <td><input type="number" id="officeHours1Inp" placeholder="0" step="0.01" min="0"></td>
+                <td><input type="number" id="officeHours2Inp" placeholder="0" step="0.01" min="0"></td>
+                <td id="officeHours12Inp" class="result"></td>
             </tr>
             <tr>
                 <td class=" firstcol">Telestunden</td>
-                <td><input type="number" id="telHours1" placeholder="0" step="0.01" min="0"></td>
+                <td><input type="number" id="telHours1Inp" placeholder="0" step="0.01" min="0"></td>
                 <td><input type="number" id="telHours2Inp" placeholder="0" step="0.01" min="0"></td>
-                <td id="totalTelHours" class="result"></td>
+                <td id="telHours12Inp" class="result"></td>
             </tr>
             <tr class="result">
                 <td class=" firstcol">Gesamt</td>
@@ -208,7 +207,7 @@
             </tr>
             <tr>
                 <td class=" firstcol">tägl. Arbeitszeit</td>
-                <td><input type="number" id="dailyHours" value="8.01" step="0.01" min="0"></td>
+                <td><input type="number" id="normalDailyHours" value="8.01" step="0.01" min="0"></td>
                 <td id="prHours2" class="optimal-result"></td>
             </tr>
             <tr>
@@ -246,45 +245,41 @@
             const workDays1 = parseFloat(document.getElementById('workDays1').value) || 0;
             const workDays2 = parseFloat(document.getElementById('workDays2').value) || 0;
             const totalWorkDays = workDays1 + workDays2;
-            const prHours1 = parseFloat(document.getElementById('prHours1').value) || 0;
-            const prHours2Inp = parseFloat(document.getElementById('prHours2Inp').value) || 0;
-            const totalPrHours = prHours1 + prHours2Inp;
-            const telHours1 = parseFloat(document.getElementById('telHours1').value) || 0;
+            const officeHours1Inp = parseFloat(document.getElementById('officeHours1Inp').value) || 0;
+            const officeHours2Inp = parseFloat(document.getElementById('officeHours2Inp').value) || 0;
+            const officeHours12Inp = officeHours1Inp + officeHours2Inp;
+            const telHours1Inp = parseFloat(document.getElementById('telHours1Inp').value) || 0;
             const telHours2Inp = parseFloat(document.getElementById('telHours2Inp').value) || 0;
-            const totalTelHours = telHours1 + telHours2Inp;
-            const totalHoursMonth1 = telHours1 + prHours1;
-            const totalHoursMonth2 = telHours2Inp + prHours2Inp;
+            const telHours12Inp = telHours1Inp + telHours2Inp;
+            const totalHoursMonth1 = telHours1Inp + officeHours1Inp;
+            const totalHoursMonth2 = telHours2Inp + officeHours2Inp;
             const totalHours = totalHoursMonth1 + totalHoursMonth2;
-            const dailyHours = parseFloat(document.getElementById('dailyHours').value) || 8.01;
+            const normalDailyHours = parseFloat(document.getElementById('normalDailyHours').value) || 8.01;
             const telePercent = parseFloat(document.getElementById('telePercent').value);
 
-            // Get the Month 2 span elements
+            // Monat 2 span Elemente abrufen
             const prHours2Span = document.getElementById('prHours2');
             const telHours2Span = document.getElementById('telHours2');
 
             // Erwartungswerte
-            const expectedTotalHours1 = workDays1 * dailyHours;
-            const expectedTotalHours2 = workDays2 * dailyHours;
-            const expectedTotalHours12 = (workDays1 + workDays2) * dailyHours;
-
-            const percentOfficeHours1 = prHours1 / (prHours1 + telHours1) * 100 || 0;
-            const percentOfficeHours2 = prHours2Inp / (prHours2Inp + telHours2Inp) * 100 || 0;
-            const percentTeleHours1 = telHours1 / (prHours1 + telHours1) * 100 || 0;
-            const percentTeleHours2 = telHours2Inp / (prHours2Inp + telHours2Inp) * 100 || 0;
+            const expectedTotalHours1 = workDays1 * normalDailyHours;
+            const expectedTotalHours2 = workDays2 * normalDailyHours;
+            const expectedTotalHours12 = (workDays1 + workDays2) * normalDailyHours;
+            // Anteile
+            const percentOfficeHours1 = officeHours1Inp / (officeHours1Inp + telHours1Inp) * 100 || 0;
+            const percentOfficeHours2 = officeHours2Inp / (officeHours2Inp + telHours2Inp) * 100 || 0;
+            const percentTeleHours1 = telHours1Inp / (officeHours1Inp + telHours1Inp) * 100 || 0;
+            const percentTeleHours2 = telHours2Inp / (officeHours2Inp + telHours2Inp) * 100 || 0;
             
-            // Calculate target tele hours for both months combined
+            // Die optimale Stundenverteilung fuer Monat berechnen
             const targetTeleHours = (totalHoursMonth1 + expectedTotalHours2) * (telePercent / 100);
-            
-            // Calculate how many tele hours are still needed after month 1
-            const remainingTeleHours = Math.max(0, targetTeleHours - telHours1);
-
-            // Calculate optimal tele hours for Month 2
+            // Math.max damit keine Werte unter Null angezeigt werden
+            const remainingTeleHours = Math.max(0, targetTeleHours - telHours1Inp);
+            // Math.min falls Monat 1 schon Gesamtsoll erfüllt
             const optimalTelHours2 = Math.min(expectedTotalHours2, remainingTeleHours);
-
-            // Calculate optimal office hours for Month 2
             const optimalPrHours2 = Math.max(0, expectedTotalHours2 - optimalTelHours2);
             
-            // Update Month 2 span elements
+            // Monat 2 span Elemente mit Optimalwerten updaten
             document.getElementById('prHours2').textContent = 'Office: ' + formatNumber(optimalPrHours2) + 'h';
             document.getElementById('telHours2').textContent = 'Tele: ' + formatNumber(optimalTelHours2) + 'h';
             
@@ -293,8 +288,8 @@
             
             // Summen in Eingabetabelle updaten
             document.getElementById('totalWorkDays').textContent = formatNumber(totalWorkDays);
-            document.getElementById('totalPrHours').textContent = formatNumber(totalPrHours) + 'h';
-            document.getElementById('totalTelHours').textContent = formatNumber(totalTelHours) + 'h';
+            document.getElementById('officeHours12Inp').textContent = formatNumber(officeHours12Inp) + 'h';
+            document.getElementById('telHours12Inp').textContent = formatNumber(telHours12Inp) + 'h';
             document.getElementById('totalHoursMonth1').textContent = formatNumber(totalHoursMonth1) + 'h';
             document.getElementById('totalHoursMonth2').textContent = formatNumber(totalHoursMonth2) + 'h';
             document.getElementById('totalHours').textContent = formatNumber(totalHours) + 'h';
@@ -302,17 +297,17 @@
             const expectedHomeHours = expectedTotalHours12 * (telePercent / 100);
             
             // Abweichungen
-            const teleDays1 = telHours1 / dailyHours || 0;
-            const teleDays12 = expectedHomeHours / dailyHours || 0;
+            const teleDays1 = telHours1Inp / normalDailyHours || 0;
+            const teleDays12 = expectedHomeHours / normalDailyHours || 0;
             const teleDays2 = teleDays12 - teleDays1 || 0;
             
-            const diffHours1 = telHours1 - expectedTotalHours1;
+            const diffHours1 = telHours1Inp - expectedTotalHours1;
             const diffHours2 = telHours2 - expectedTotalHours2;
-            const diffHours12 = (telHours1 + telHours2) - expectedTotalHours12;
-            const diffPercentOfficeHours = (prHours1 + prHours2Inp) / totalHours * 100 || 0;
-            const diffPercentTeleHours = (telHours1 + telHours2Inp) / totalHours * 100 || 0;
+            const diffHours12 = (telHours1Inp + telHours2) - expectedTotalHours12;
+            const diffPercentOfficeHours = (officeHours1Inp + officeHours2Inp) / totalHours * 100 || 0;
+            const diffPercentTeleHours = (telHours1Inp + telHours2Inp) / totalHours * 100 || 0;
             
-            // Update results table
+            // Resultate updaten
             const resultsHtml = `
                 <tr>
                     <td class=" firstcol">Regelarbeitszeit</td>
@@ -367,7 +362,7 @@
             input.addEventListener('input', calculateHours);
         });
 
-        // Add event listeners to track manual input
+        // Eventlistener fuer manuelle Inputs Monat 2
         document.getElementById('prHours2').addEventListener('input', function() {
             this.dataset.manuallySet = 'true';
         });
@@ -375,13 +370,13 @@
             this.dataset.manuallySet = 'true';
         });
 
-        // Reset the manually set flag when workDays2 changes
+        // Wenn workDays2 geaendert wird, manuelle Flag fuer Monat 2 ersetzen
         document.getElementById('workDays2').addEventListener('input', function() {
             document.getElementById('prHours2').dataset.manuallySet = '';
             document.getElementById('telHours2').dataset.manuallySet = '';
         });
 
-        // Add touchend event for mobile devices
+        // Touchendevent fuer Mobilgeraete
         document.querySelectorAll('input, select').forEach(input => {
             input.addEventListener('touchend', function() {
                 setTimeout(calculateHours, 0);
@@ -392,40 +387,40 @@
         calculateHours();
 
         function resetCalculator() {
-            // Remove focus from all input fields
+            // Fokus aus Inputfeldern nehmen
             document.activeElement.blur();
-            // Reset input fields
+            // Inputfelder resetten
             document.getElementById('workDays1').value = '';
             document.getElementById('workDays2').value = '';
-            document.getElementById('prHours1').value = '';
-            document.getElementById('telHours1').value = '';
-            document.getElementById('prHours2Inp').value = '';
+            document.getElementById('officeHours1Inp').value = '';
+            document.getElementById('telHours1Inp').value = '';
+            document.getElementById('officeHours2Inp').value = '';
             document.getElementById('telHours2Inp').value = '';
 
-            // Reset optimal values
+            // Optimalwerte resetten
             document.getElementById('prHours2').textContent = '0,00';
             document.getElementById('telHours2').textContent = '0,00';
 
-            // Reset daily hours to default
-            document.getElementById('dailyHours').value = '8.01';
+            // Regelarbeitszeit resetten
+            document.getElementById('normalDailyHours').value = '8.01';
 
-            // Reset telePercent to default (assuming 60% is the default)
+            // Teleanteil auf 60% resetten
             document.getElementById('telePercent').value = '60';
 
-            // Clear manually set flags
+            // manuelle Flag fuer Monat 2 ersetzen
             document.getElementById('prHours2').dataset.manuallySet = '';
             document.getElementById('telHours2').dataset.manuallySet = '';
 
-            // Recalculate
+            // Neuberechnung
             calculateHours();
-            // Prevent default form submission behavior if the button is inside a form
+            // Wenn Button in Formular, wird hier Formularuebermittlung unterdrueckt
             return false;
         }
 
-        // Event listener for the reset button
+        // Eventlistener fuer Resetbutton
         document.getElementById('resetButton').addEventListener('click', resetCalculator);
         document.getElementById('resetButton').addEventListener('touchend', function(e) {
-            e.preventDefault(); // Prevent default touch behavior
+            e.preventDefault(); // Default Touchverhalten unterdruecken
             resetCalculator();
         });
     </script>
