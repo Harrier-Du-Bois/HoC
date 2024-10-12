@@ -87,6 +87,14 @@
             padding-right: 5px;
             text-indent: 0.01px;
             text-overflow: '';
+            /* Remove default arrow */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            /* For Internet Explorer */
+            &::-ms-expand {
+                display: none;
+            }
         }
 
         .optimal-result {
