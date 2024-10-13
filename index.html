@@ -9,6 +9,9 @@
 
     <style>
         body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             font-family: system-ui, Arial, sans-serif;
             font-size: 16px;
             line-height: 2;
@@ -19,10 +22,9 @@
         }
         
         .table-container {
-            padding-left: 10px;
-            padding-right: 10px;
+            padding: 0px 10px;
             width: 100%;
-            max-width: 600px;
+            max-width: 400px;
             margin: 0 auto; /* Alles zentrieren, wenn Container < Screen */
             box-sizing: border-box;
         }
@@ -33,11 +35,12 @@
             padding-left: 0; /* Padding links entfernen */
             align-self: flex-start;
             width: 100%;
-            max-width: 600px;
+            max-width: 400px;
             box-sizing: border-box;
         }
         
         table {
+            table-layout: fixed;
             border-collapse: separate;
             overflow: hidden;
             margin: 0 auto;
@@ -51,14 +54,17 @@
         
         th {
             font-weight: bold;
-            padding: 5px;
+            padding: 0px 7px 0px 0px;
             text-align: right;
+            width: fit-content;
+            max-width: fit-content;
             background-color: #444;
         }
         
         td {
-            padding: 5px;
+            padding: 5px 5px 5px 0px;
             text-align: right;
+            width: fit-content;
             max-width: fit-content;
             line-height: 1.5;
         }
@@ -115,6 +121,7 @@
         
         .firstcol {
             text-align: left;
+            padding:  5px 0px 5px 5px;
         }
         /* #resultsTable td:not(:first-child) {
             text-align: right;
@@ -142,22 +149,6 @@
             font-size: 12px;
             color: #888;
         }
-
-        @media screen and (max-width: 600px) {
-            table {
-                width: 100%;
-                max-width: auto;
-                table-layout: fixed;
-            }
-        }
-        
-        @media screen and (min-width: 601px) {
-            body {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-        }
     </style>
 </head>
 
@@ -167,8 +158,8 @@
         <table>
             <tr>
                 <th class=" firstcol">Eingabe</th>
-                <th>Vormonat</th>
-                <th>akt. Monat</th>
+                <th style="width: 85px; max-width: 85px;">Vormonat</th>
+                <th style="width: 85px; max-width: 85px;">akt. Monat</th>
                 <th class="result">Gesamt</th>
             </tr>
             <tr>
@@ -202,12 +193,13 @@
         <table>
             <tr>
                 <th class=" firstcol">Grundwerte</th>
-                <th></th>
-                <th class="optimal-result">akt. Monat Optimum</th>
+                <th style="width: 70px; max-width: 70px;"></th>
+                <th class="optimal-result" colspan="2">akt. Monat Optimum</th>
             </tr>
             <tr>
                 <td class=" firstcol">tägl. Arbeitszeit</td>
                 <td><input type="number" id="normalDailyHours" value="8.01" step="0.01" min="0"></td>
+                <td class="optimal-result" style="padding: 0;">Office:</td>
                 <td id="prHours2" class="optimal-result"></td>
             </tr>
             <tr>
@@ -218,19 +210,14 @@
                         <option value="80">80%</option>
                     </select>
                 </td>
+                <td class="optimal-result" style="padding: 0;">Tele:</td>
                 <td id="telHours2" class="optimal-result"></td>
             </tr>
         </table>
     </div>
     <div class="table-container">
         <table id="resultsTable">
-            <tr>
-                <th class=" firstcol">Resultat</th>
-                <th>Vormonat</th>
-                <th>akt. Monat</th>
-                <th class="result">Gesamt</th>
-            </tr>
-            <!-- JS Skript Ergebnisse -->
+            <!-- JS Ergebnisse -->
         </table>
     </div>
     <div class="table-container">
@@ -241,7 +228,7 @@
     </div>
     <script>
         function adjustFontSize() {
-            const cells = document.querySelectorAll('td', 'tr', '.result', '.optimal-result');
+            const cells = document.querySelectorAll('td, tr, .result, .optimal-result');
             cells.forEach(cell => {
                 let fontSize = 16; // Default
                 cell.style.fontSize = fontSize + 'px';
@@ -290,8 +277,8 @@
             const optimalPrHours2 = Math.max(0, expectedTotalHours2 - optimalTelHours2);
             
             // Monat 2 span Elemente mit Optimalwerten updaten
-            document.getElementById('prHours2').textContent = 'Office: ' + formatNumber(optimalPrHours2) + 'h';
-            document.getElementById('telHours2').textContent = 'Tele: ' + formatNumber(optimalTelHours2) + 'h';
+            document.getElementById('prHours2').textContent = formatNumber(optimalPrHours2) + 'h';
+            document.getElementById('telHours2').textContent = formatNumber(optimalTelHours2) + 'h';
             
             const prHours2 = optimalPrHours2;
             const telHours2 = optimalTelHours2;
@@ -353,8 +340,8 @@
             document.getElementById('resultsTable').innerHTML = `
                 <tr>
                     <th class=" firstcol">Resultat</th>
-                    <th>Vormonat</th>
-                    <th>akt. Monat</th>
+                    <th style="width: 85px; max-width: 85px;">Vormonat</th>
+                    <th style="width: 85px; max-width: 85px;">akt. Monat</th>
                     <th class="result">Gesamt</th>
                 </tr>
                 ${resultsHtml}
@@ -366,9 +353,33 @@
             return num.toFixed(2).replace('.', ',');
         }
 
-        // Eventlistener fuer Fontgroessenanpassung
-        window.addEventListener('load', adjustFontSize);
-        window.addEventListener('resize', adjustFontSize);
+        function resetCalculator() {
+            // Fokus aus Inputfeldern nehmen
+            document.activeElement.blur();
+            // Inputfelder resetten
+            document.getElementById('workDays1').value = '';
+            document.getElementById('workDays2').value = '';
+            document.getElementById('officeHours1Inp').value = '';
+            document.getElementById('telHours1Inp').value = '';
+            document.getElementById('officeHours2Inp').value = '';
+            document.getElementById('telHours2Inp').value = '';
+            // Optimalwerte resetten
+            document.getElementById('prHours2').textContent = '0,00';
+            document.getElementById('telHours2').textContent = '0,00';
+            // Regelarbeitszeit resetten
+            document.getElementById('normalDailyHours').value = '8.01';
+            // Teleanteil auf 60% resetten
+            document.getElementById('telePercent').value = '60';
+            // manuelle Flag fuer Monat 2 ersetzen
+            document.getElementById('prHours2').dataset.manuallySet = '';
+            document.getElementById('telHours2').dataset.manuallySet = '';
+
+            // Neuberechnung
+            calculateHours();
+            adjustFontSize();
+            // Wenn Button in Formular, unterdrueckt return false die Uebermittlung
+            return false;
+        }
 
         // Eventlistener fuer Inputs
         document.querySelectorAll('input, select').forEach(input => {
@@ -396,39 +407,9 @@
             });
         });
 
-        // Berechnung beim ersten Aufruf
-        calculateHours();
-
-        function resetCalculator() {
-            // Fokus aus Inputfeldern nehmen
-            document.activeElement.blur();
-            // Inputfelder resetten
-            document.getElementById('workDays1').value = '';
-            document.getElementById('workDays2').value = '';
-            document.getElementById('officeHours1Inp').value = '';
-            document.getElementById('telHours1Inp').value = '';
-            document.getElementById('officeHours2Inp').value = '';
-            document.getElementById('telHours2Inp').value = '';
-
-            // Optimalwerte resetten
-            document.getElementById('prHours2').textContent = '0,00';
-            document.getElementById('telHours2').textContent = '0,00';
-
-            // Regelarbeitszeit resetten
-            document.getElementById('normalDailyHours').value = '8.01';
-
-            // Teleanteil auf 60% resetten
-            document.getElementById('telePercent').value = '60';
-
-            // manuelle Flag fuer Monat 2 ersetzen
-            document.getElementById('prHours2').dataset.manuallySet = '';
-            document.getElementById('telHours2').dataset.manuallySet = '';
-
-            // Neuberechnung
-            calculateHours();
-            // Wenn Button in Formular, wird hier Formularuebermittlung unterdrueckt
-            return false;
-        }
+        // Eventlistener fuer Fontgroessenanpassung
+        window.addEventListener('load', adjustFontSize);
+        window.addEventListener('resize', adjustFontSize);
 
         // Eventlistener fuer Resetbutton
         document.getElementById('resetButton').addEventListener('click', resetCalculator);
@@ -436,6 +417,8 @@
             e.preventDefault(); // Default Touchverhalten unterdruecken
             resetCalculator();
         });
+
+        calculateHours();
     </script>
 </body>
 </html>
