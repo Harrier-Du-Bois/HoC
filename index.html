@@ -57,7 +57,7 @@
             padding: 0px 7px 0px 0px;
             text-align: right;
             width: fit-content;
-            max-width: fit-content;
+            max-width: 85px;
             background-color: #444;
         }
         
@@ -104,7 +104,8 @@
         }
 
         .optimal-result {
-            width: 165px;
+            width: fit-content;
+            max-width: fit-content;
             background-color: #444;
             padding-right: 10px;
             text-align: right;
@@ -112,7 +113,8 @@
         }
 
         .result {
-            width: 65px;
+            width: fit-content;
+            max-width: fit-content;
             font-weight: bold;
             text-align: right;
             background-color: #444;
@@ -158,8 +160,8 @@
         <table>
             <tr>
                 <th class=" firstcol">Eingabe</th>
-                <th style="width: 85px; max-width: 85px;">Vormonat</th>
-                <th style="width: 85px; max-width: 85px;">akt. Monat</th>
+                <th>Vormonat</th>
+                <th>akt. Monat</th>
                 <th class="result">Gesamt</th>
             </tr>
             <tr>
@@ -228,11 +230,11 @@
     </div>
     <script>
         function adjustFontSize() {
-            const cells = document.querySelectorAll('td, tr, .result, .optimal-result');
+            const cells = document.querySelectorAll('th, tr, td, .result, .optimal-result');
             cells.forEach(cell => {
                 let fontSize = 16; // Default
                 cell.style.fontSize = fontSize + 'px';
-                while (cell.scrollWidth > cell.offsetWidth && fontSize > 8) {
+                while (cell.scrollWidth > cell.offsetWidth && fontSize > 6) {
                     fontSize--;
                     cell.style.fontSize = fontSize + 'px';
                 }
@@ -340,12 +342,13 @@
             document.getElementById('resultsTable').innerHTML = `
                 <tr>
                     <th class=" firstcol">Resultat</th>
-                    <th style="width: 85px; max-width: 85px;">Vormonat</th>
-                    <th style="width: 85px; max-width: 85px;">akt. Monat</th>
+                    <th>Vormonat</th>
+                    <th>akt. Monat</th>
                     <th class="result">Gesamt</th>
                 </tr>
                 ${resultsHtml}
             `;
+            adjustFontSize();
         }
 
         // Dezimalzeichen ersetzen
@@ -376,7 +379,6 @@
 
             // Neuberechnung
             calculateHours();
-            adjustFontSize();
             // Wenn Button in Formular, unterdrueckt return false die Uebermittlung
             return false;
         }
