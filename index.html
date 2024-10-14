@@ -90,7 +90,7 @@
             font-size: 16px;
             width: 100%;
             min-width: 20px;
-            max-width: 65px;
+            max-width: 70px;
             background-color: #444;
             color: #fff;
             border: 1px solid #555;
@@ -166,10 +166,10 @@
         <h1>Telerechner</h1>
         <table>
             <colgroup>
-                <col style="width: 37%;">
-                <col style="width: 21%;">
-                <col style="width: 21%;">
-                <col style="width: 21%;">
+                <col style="width: 40%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
             </colgroup>
             <tr>
                 <th class=" firstcol">Eingabe</th>
@@ -179,21 +179,21 @@
             </tr>
             <tr>
                 <td class=" firstcol">Arbeitstage</td>
-                <td><input type="number" id="workDays1" placeholder="0" step="1" min="0"></td>
-                <td><input type="number" id="workDays2" placeholder="0" step="1" min="0"></td>
+                <td><input type="number" id="workDays1" placeholder="0" step="1" min="0" max="99.99"></td>
+                <td><input type="number" id="workDays2" placeholder="0" step="1" min="0" max="99.99"></td>
                 <td id="totalWorkDays" class="result"></td>
             </tr>
             <tr>
             <tr>
                 <td class=" firstcol">Officestunden</td>
-                <td><input type="number" id="officeHours1Inp" placeholder="0" step="0.01" min="0"></td>
-                <td><input type="number" id="officeHours2Inp" placeholder="0" step="0.01" min="0"></td>
+                <td><input type="number" id="officeHours1Inp" placeholder="0" step="0.01" min="0" max="999.99"></td>
+                <td><input type="number" id="officeHours2Inp" placeholder="0" step="0.01" min="0" max="999.99"></td>
                 <td id="officeHours12Inp" class="result"></td>
             </tr>
             <tr>
                 <td class=" firstcol">Telestunden</td>
-                <td><input type="number" id="telHours1Inp" placeholder="0" step="0.01" min="0"></td>
-                <td><input type="number" id="telHours2Inp" placeholder="0" step="0.01" min="0"></td>
+                <td><input type="number" id="telHours1Inp" placeholder="0" step="0.01" min="0" max="999.99"></td>
+                <td><input type="number" id="telHours2Inp" placeholder="0" step="0.01" min="0" max="999.99"></td>
                 <td id="telHours12Inp" class="result"></td>
             </tr>
             <tr class="result">
@@ -218,7 +218,7 @@
             </tr>
             <tr>
                 <td class=" firstcol">tägl. Arbeitszeit</td>
-                <td><input type="number" id="normalDailyHours" value="8.01" step="0.01" min="0"></td>
+                <td><input type="number" id="normalDailyHours" value="8.01" step="0.01" min="0" max="10.00"></td>
                 <td id="prHours2" class="optimal-result"></td>
             </tr>
             <tr>
@@ -257,6 +257,34 @@
             });
         }
         
+        function limitInputRange(input) {
+            let maxValue;
+            if (input.id.includes('Days')) {
+                maxValue = 99.99;
+            } else if (input.id.includes('Daily')) {
+                maxValue = 10.00;
+            } else {
+                maxValue = 999.99;
+            }
+            
+            // Apply limit immediately
+            if (parseFloat(input.value) > maxValue) {
+                input.value = maxValue.toFixed(2);
+            }
+            
+            input.addEventListener('input', function() {
+                let value = parseFloat(this.value);
+                if (isNaN(value)) {
+                    this.value = '';
+                } else if (value > maxValue) {
+                    this.value = maxValue.toFixed(2);
+                } else {
+                    // Only fix to 2 decimal places if there's a decimal point
+                    this.value = this.value.includes('.') ? value.toFixed(2) : value.toString();
+                }
+            });
+        }
+
         function calculateHours() {
             // Inputs abrufen
             const workDays1 = parseFloat(document.getElementById('workDays1').value) || 0;
@@ -324,10 +352,10 @@
             // Resultate updaten
             const resultsHtml = `
                 <colgroup>
-                    <col style="width: 37%;">
-                    <col style="width: 21%;">
-                    <col style="width: 21%;">
-                    <col style="width: 21%;">
+                    <col style="width: 40%;">
+                    <col style="width: 20%;">
+                    <col style="width: 20%;">
+                    <col style="width: 20%;">
                 </colgroup>
                 <tr>
                     <td class=" firstcol">Regelarbeitszeit</td>
@@ -423,6 +451,9 @@
             document.getElementById('prHours2').dataset.manuallySet = '';
             document.getElementById('telHours2').dataset.manuallySet = '';
         });
+
+        // Limiter fuer Inputranges
+        document.querySelectorAll('input[type="number"]').forEach(limitInputRange);
 
         // Touchendevent fuer Mobilgeraete
         document.querySelectorAll('input, select').forEach(input => {
